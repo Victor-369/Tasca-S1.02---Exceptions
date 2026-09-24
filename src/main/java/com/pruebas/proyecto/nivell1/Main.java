@@ -7,7 +7,7 @@ import com.pruebas.proyecto.nivell1.models.Sale;
 import java.util.List;
 
 public class Main {
-    static void main() {
+    public static void main() {
         Sale salesWithProducts = new Sale();
 
         salesWithProducts.getProducts().addAll(List.of(
