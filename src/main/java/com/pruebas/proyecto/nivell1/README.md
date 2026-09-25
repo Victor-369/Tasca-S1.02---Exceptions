@@ -1,3 +1,4 @@
+# Level 1 - Customised exceptions and error control
 ### What is the difference between a checked exception and an unchecked exception (such as `RuntimeException`)?
 
 The main difference lies in when the compiler requires the exception to be handled:
