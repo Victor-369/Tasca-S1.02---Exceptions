@@ -10,8 +10,10 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleReader {
-    private static final Scanner scanner = new Scanner(System.in);
-    private static final Logger logger = LogManager.getLogger(ConsoleReader.class);
+    private static final Scanner SCANNER = new Scanner(System.in);
+    private static final Logger LOGGER = LogManager.getLogger(ConsoleReader.class);
+    private static final int MAX_LENGHT_STRING = 3;
+
 
     public static byte readByte(String message) {
         boolean valid = false;
@@ -20,16 +22,16 @@ public class ConsoleReader {
         while (!valid) {
             try {
                 System.out.print(message);
-                answer = scanner.nextByte();
-                
+                answer = SCANNER.nextByte();
+
                 valid = true;
             } catch (InputMismatchException e) {
-                logger.error("Must be a byte: " + e.getMessage());
+                LOGGER.error("Must be a byte");
             } finally {
-                scanner.nextLine();
+                SCANNER.nextLine();
             }
         }
-        
+
         return answer;
     }
 
@@ -40,13 +42,13 @@ public class ConsoleReader {
         while (!valid) {
             try {
                 System.out.print(message);
-                answer = scanner.nextInt();
+                answer = SCANNER.nextInt();
 
                 valid = true;
             } catch (InputMismatchException e) {
-                logger.error("Must be an int: " + e.getMessage());
+                LOGGER.error("Must be an int");
             } finally {
-                scanner.nextLine();
+                SCANNER.nextLine();
             }
         }
 
@@ -60,13 +62,13 @@ public class ConsoleReader {
         while (!valid) {
             try {
                 System.out.print(message);
-                answer = scanner.nextFloat();
+                answer = SCANNER.nextFloat();
 
                 valid = true;
             } catch (InputMismatchException e) {
-                logger.error("Must be a float: " + e.getMessage());
+                LOGGER.error("Must be a float");
             } finally {
-                scanner.nextLine();
+                SCANNER.nextLine();
             }
         }
 
@@ -80,13 +82,13 @@ public class ConsoleReader {
         while (!valid) {
             try {
                 System.out.print(message);
-                answer = scanner.nextDouble();
+                answer = SCANNER.nextDouble();
 
                 valid = true;
             } catch (InputMismatchException e) {
-                logger.error("Must be a double: " + e.getMessage());
+                LOGGER.error("Must be a double");
             } finally {
-                scanner.nextLine();
+                SCANNER.nextLine();
             }
         }
 
@@ -100,13 +102,13 @@ public class ConsoleReader {
         while (!valid) {
             try {
                 System.out.print(message);
-                String tmp = scanner.nextLine();
+                String tmp = SCANNER.nextLine();
                 if (tmp.length() != 1) throw new UniqueCharacterException("Char too long");
                 answer = tmp.charAt(0);
 
                 valid = true;
             } catch (UniqueCharacterException e) {
-                logger.error("Must be a char: " + e.getMessage());
+                LOGGER.error("Must be a char");
             }
         }
 
@@ -120,12 +122,12 @@ public class ConsoleReader {
         while (!valid) {
             try {
                 System.out.print(message);
-                answer = scanner.nextLine();
-                if (answer.length() > 3) throw new StringTooLongException("String too long");
+                answer = SCANNER.nextLine();
+                if (answer.length() > MAX_LENGHT_STRING) throw new StringTooLongException("String too long");
 
                 valid = true;
             } catch (StringTooLongException e) {
-                logger.error("String is too long: " + e.getMessage());
+                LOGGER.error("String is too long");
             }
         }
 
@@ -139,13 +141,17 @@ public class ConsoleReader {
         while (!valid) {
             try {
                 System.out.print(message);
-                String tmp = scanner.nextLine();
+                String tmp = SCANNER.nextLine();
 
-                if (tmp.equals("y")) { answer = true; valid = true; }
-                else if (tmp.equals("n")) { answer = false; valid = true; }
-                else throw new YesNoAnswerException("Wrong answer");
+                if (tmp.equals("s")) {
+                    answer = true;
+                    valid = true;
+                } else if (tmp.equals("n")) {
+                    answer = false;
+                    valid = true;
+                } else throw new YesNoAnswerException("Wrong answer");
             } catch (YesNoAnswerException e) {
-                logger.error("Answer must be 'y' or 'n': " + e.getMessage());
+                LOGGER.error("Answer must be 's' or 'n'");
             }
         }
 
