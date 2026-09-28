@@ -12,13 +12,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
-    private Scanner scanner;
-    private ReservationService reservationService;
+    private final ReservationService reservationService;
+    private final Scanner scanner;
+    private static final String ASK_CLIENTS_NAME = "\n Write client's name: ";
 
 
     public ConsoleUI(ReservationService reservationService, Scanner scanner) {
-        this.scanner = scanner;
         this.reservationService = reservationService;
+        this.scanner = scanner;
     }
 
     public void start() {
@@ -35,7 +36,10 @@ public class ConsoleUI {
                     case 3 -> reserveSeat();
                     case 4 -> cancelSeat();
                     case 5 -> cancelAllByPerson();
-                    case 0 -> System.out.println("Bye!");
+                    case 0 -> {
+                        closeScanner();
+                        System.out.println("Bye!");
+                    }
                     default -> System.out.println("Please choose a valid option from the menu.");
                 }
             } catch (SeatAlreadyTakenException | SeatAlreadyEmptyException
@@ -69,7 +73,7 @@ public class ConsoleUI {
     }
 
     private void displaySeatsByPerson() {
-        String clientName = readLine("\n Write client's name: ");
+        String clientName = readValidName(ASK_CLIENTS_NAME);
         List<Seat> reservedSeatsByPerson = reservationService.getSeatsByPerson(clientName);
 
         if (reservedSeatsByPerson.isEmpty()) {
@@ -82,7 +86,7 @@ public class ConsoleUI {
     }
 
     private void reserveSeat() {
-        String clientName = readValidName("\n Write client's name: ");
+        String clientName = readValidName(ASK_CLIENTS_NAME);
         int row = readInt("\n Write row: ");
         int seatNumber = readInt("\n Write seat number: ");
 
@@ -99,16 +103,14 @@ public class ConsoleUI {
     }
 
     private void cancelAllByPerson() {
-        String clientName = readLine("\n Write client's name: ");
+        String clientName = readValidName(ASK_CLIENTS_NAME);
+        boolean isAllReservationsCancelled = reservationService.cancelAllByPerson(clientName);
 
-        reservationService.cancelAllByPerson(clientName);
-        System.out.println("All reservations for " + clientName + " have been cancelled.");
-    }
-
-    private String readLine(String prompt) {
-        System.out.print(prompt);
-
-        return scanner.nextLine();
+        if (isAllReservationsCancelled) {
+            System.out.println("All reservations for " + clientName + " have been cancelled.");
+        } else {
+            System.out.println("Client " + clientName + " has no reservations to cancel.");
+        }
     }
 
     private int readInt(String prompt) {
@@ -129,7 +131,9 @@ public class ConsoleUI {
 
     private String readValidName(String prompt) {
         while (true) {
-            String name = readLine(prompt);
+            System.out.print(prompt);
+            String name = scanner.nextLine();
+            name = name.trim();
 
             try {
                 reservationService.validatePersonName(name);
@@ -139,5 +143,9 @@ public class ConsoleUI {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+    }
+
+    private void closeScanner() {
+        scanner.close();
     }
 }

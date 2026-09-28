@@ -34,6 +34,7 @@ public class ReservationService {
 
     public void reserveSeat(int row, int seat, String name) {
         validateSeatPosition(row, seat);
+        name = name.trim();
         validatePersonName(name);
 
         boolean alreadyTaken = seats.stream()
@@ -59,9 +60,9 @@ public class ReservationService {
         seats.remove(reservedSeat);
     }
 
-    public void cancelAllByPerson(String name) {
+    public boolean cancelAllByPerson(String name) {
         validatePersonName(name);
-        seats.removeIf(s -> s.getPersonName().equalsIgnoreCase(name));
+        return seats.removeIf(s -> s.getPersonName().equalsIgnoreCase(name));
     }
 
     private void validateSeatPosition(int row, int seat) {
@@ -73,7 +74,10 @@ public class ReservationService {
     }
 
     public void validatePersonName(String name) {
-        if (name == null || name.isBlank()) throw new InvalidPersonNameException("The name cannot be empty.");
-        if (name.matches(".*\\d.*"))  throw new InvalidPersonNameException("The name cannot contain numbers.");
+        if (!name.matches("[a-zA-ZÀ-ÿ ]+")) {
+            throw new InvalidPersonNameException(
+                    "The name can only contain letters and spaces."
+            );
+        }
     }
 }

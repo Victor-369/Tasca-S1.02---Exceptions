@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Seat {
     private final int row;
     private final int seat;
-    private String personName;
+    private final String personName;
 
 
     public Seat(String personName, int seat, int row) {
@@ -14,20 +14,30 @@ public class Seat {
         this.row = row;
     }
 
-    public int getRow() { return row; }
-    public int getSeat() { return seat; }
-    public String getPersonName() { return personName; }
-    public void setPersonName(String personName) { this.personName = personName; }
+    public int getRow() {
+        return row;
+    }
+
+    public int getSeat() {
+        return seat;
+    }
+
+    public String getPersonName() {
+        return personName;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
         Seat seat1 = (Seat) o;
         return row == seat1.row && seat == seat1.seat;
     }
 
     @Override
-    public int hashCode() { return Objects.hash(row, seat); }
+    public int hashCode() {
+        return Objects.hash(row, seat);
+    }
 
     @Override
     public String toString() {
