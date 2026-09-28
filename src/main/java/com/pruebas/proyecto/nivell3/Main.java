@@ -20,6 +20,7 @@ public class Main {
     private static int readPositiveInt(Scanner scanner, String prompt) {
         while (true) {
             System.out.print(prompt);
+
             try {
                 int value = scanner.nextInt();
                 scanner.nextLine();

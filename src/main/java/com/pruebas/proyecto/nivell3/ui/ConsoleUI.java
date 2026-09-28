@@ -82,7 +82,6 @@ public class ConsoleUI {
     }
 
     private void reserveSeat() {
-        //String clientName = readLine("\n Write client's name: ");
         String clientName = readValidName("\n Write client's name: ");
         int row = readInt("\n Write row: ");
         int seatNumber = readInt("\n Write seat number: ");
@@ -115,6 +114,7 @@ public class ConsoleUI {
     private int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
+
             try {
                 int value = scanner.nextInt();
                 scanner.nextLine();
@@ -130,6 +130,7 @@ public class ConsoleUI {
     private String readValidName(String prompt) {
         while (true) {
             String name = readLine(prompt);
+
             try {
                 reservationService.validatePersonName(name);
 
