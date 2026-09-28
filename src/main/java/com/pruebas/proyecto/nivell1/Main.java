@@ -18,7 +18,7 @@ public class Main {
 
         try {
             salesWithProducts.calculateTotal();
-            System.out.println("Tota price is: " + salesWithProducts.getTotalPrice());
+            System.out.println("Total price is: " + salesWithProducts.getTotalPrice());
         } catch (EmptySaleException e) {
             System.out.println("Error 1: " + e.getMessage());
         }
